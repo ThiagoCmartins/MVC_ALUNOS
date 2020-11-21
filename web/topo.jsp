@@ -29,7 +29,7 @@
                             <div class="navbar-nav">
                                 <a class="nav-item nav-link" href="view_novo.jsp">Novo</a>
                                 <a class="nav-item nav-link" href="view_pesquisar.jsp">Pesquisa</a>
-                                <a class="nav-item nav-link" href="AlunosController">Listar Todos</a>
+                                <a class="nav-item nav-link" href="AlunosController">Listar Tudo</a>
                             </div>
                         </div>
                     </nav>
