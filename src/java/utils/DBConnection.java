@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class DBConnection {
     // configurações para conexão com o bando de dados MySQL
     private final String driver = "com.mysql.jdbc.Driver";
-    private final String url = "jdbc:mysql://localhost:3306/nomedobanco";
+    private final String url = "jdbc:mysql://localhost:3306/mvc_alunos";
     // credenciais de acesso
     private final String usuario = "root";
     private final String senha = "";

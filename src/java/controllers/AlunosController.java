@@ -85,28 +85,28 @@ public class AlunosController extends HttpServlet {
             
             switch (operacao) {
             case "Inserir":
-                request.setAttribute("mensagem", sql.getMessage());
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                //request.setAttribute("mensagem", sql.getMessage());
+                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
             case "Pesquisar":
-                request.setAttribute("mensagem", sql.getMessage());
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                //request.setAttribute("mensagem", sql.getMessage());
+                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
             case "Editar":
-                request.setAttribute("mensagem", sql.getMessage());
+                //request.setAttribute("mensagem", sql.getMessage());
                 request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
             case "Atualizar":
-                request.setAttribute("mensagem", sql.getMessage());
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                //request.setAttribute("mensagem", sql.getMessage());
+                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
             case "Excluir":
-                request.setAttribute("mensagem", "Excluir");
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                //request.setAttribute("mensagem", "Excluir");
+                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
             case "ConfirmarExclusao":
-                request.setAttribute("mensagem", "Confirmar Exclusão");
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                //request.setAttribute("mensagem", "Confirmar Exclusão");
+                //.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
         }
     }

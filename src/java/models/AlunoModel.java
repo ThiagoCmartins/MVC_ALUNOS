@@ -26,10 +26,50 @@ public class AlunoModel implements Serializable {
     // implementar os métodos do CRUD
     // método inserir - Create (insert)
     public void inserir(Aluno aluno) {
+        try{
+            String sql = "INSERT INTO alunos (ra, nome, curso) VALUES (?,?,?)";
+            try(PreparedStatement ps = conexao.prepareStatement(sql)){
+                ps.setString(1, aluno.getRa());
+                ps.setString(2, aluno.getNome());
+                ps.setString(3, aluno.getCurso());
+                
+                ps.execute();
+                ps.close();
+            }
+            conexao.close();
+            this.status = "Aluno [" + aluno.getNome() + "] Inserido Com Sucesso";
+        }catch(SQLException ex){
+            this.status = "Erro ao inserir o aluno [" + ex.getMessage() + "]";
+        }
     }
     // métodos de listar e pesquisar (Read - select)
     public List<Aluno> listar() {
-        return null;
+        
+        List<Aluno> alunos = new ArrayList();
+        
+        try{
+            String sql = "SELECT * FROM alunos ORDER BY nome ASC;";
+        try(
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ResultSet re = ps.executeQuery()){
+            
+            while (re.next()){
+                Aluno aluno = new Aluno();
+                aluno.setId(re.getInt("id"));
+                aluno.setRa(re.getString("ra"));
+                aluno.setNome(re.getString("nome"));
+                aluno.setCurso(re.getString("Curso"));
+                
+                alunos.add(aluno);
+            }
+            re.close();
+            ps.close();
+        }
+            return alunos;
+            
+        } catch (SQLException ex) {
+            throw new RuntimeException("falha ao listar.", ex);
+        }
     }
 
     public List<Aluno> pesquisar(Aluno aluno, String tipo) {
