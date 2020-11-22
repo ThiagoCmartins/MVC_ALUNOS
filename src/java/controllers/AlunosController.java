@@ -14,14 +14,17 @@ import models.AlunoModel;
 
 /**
  *
- * @author Correia Martins
+ * @author souza
  */
 public class AlunosController extends HttpServlet {
+
     // criar uma lista para receber alunos vindos do model
     List<Aluno> alunosDados;
+
     // Cria um objeto Aluno para a classe toda
     Aluno aluno = new Aluno();
-        /**
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -31,8 +34,9 @@ public class AlunosController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -74,39 +78,109 @@ public class AlunosController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException{
-            response.setContentType("text/html;charset=UTF-8");
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            
-            String operacao = request.getParameter("operacao");
-            
-            switch (operacao) {
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        // pega o valor enviado na variável "operacao"
+        String operacao = request.getParameter("operacao");
+
+        // criar um menu de opções com a estrutura de seleção switch
+        switch (operacao) {
             case "Inserir":
-                //request.setAttribute("mensagem", sql.getMessage());
-                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                try {
+                    // recuperar os dados do formulário
+                    aluno.setRa(request.getParameter("ra"));
+                    aluno.setNome(request.getParameter("nome"));
+                    aluno.setCurso(request.getParameter("curso"));
+
+                    // Instanciar o Model (Aluno)
+                    AlunoModel am = new AlunoModel();
+
+                    // Passando os valores para o objeto "am"
+                    am.inserir(aluno);
+
+                    // redireciona para a view de mensagem
+                    request.setAttribute("mensagem", am.toString());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+
+                } catch (SQLException sql) {
+                    request.setAttribute("mensagem", sql.getMessage());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                }
                 break;
+
             case "Pesquisar":
-                //request.setAttribute("mensagem", sql.getMessage());
-                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                String valorDigitado = request.getParameter("valor");
+                try {
+                    
+                    AlunoModel am = new AlunoModel();
+                    switch (request.getParameter("tipo")) {
+                        case "ra":
+                            aluno.setRa(valorDigitado);
+                            break;
+                        case "nome":
+                            aluno.setNome(valorDigitado);
+                            break;
+                        case "curso":
+                            aluno.setCurso(valorDigitado);
+                            break;
+                    }
+
+                    alunosDados = am.pesquisar(aluno, request.getParameter("tipo"));
+
+                    request.setAttribute("listaAlunos", alunosDados);
+                    request.getRequestDispatcher("view_listar.jsp").forward(request, response);
+
+                } catch (SQLException sql) {
+                    request.setAttribute("mensagem", sql.getMessage());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                }
                 break;
+
             case "Editar":
-                //request.setAttribute("mensagem", sql.getMessage());
+                
+                try {
+                    AlunoModel am = new AlunoModel();
+                    aluno.setRa(request.getParameter("ra"));
+                    alunosDados = am.pesquisar(aluno, "ra");           
+                    
+                    request.setAttribute("alunoDados", alunosDados);
+                    request.getRequestDispatcher("view_editar.jsp").forward(request, response);
+                    
+                } catch (SQLException sql) {
+                    request.setAttribute("mensagem", sql.getMessage());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                }
+                break;
+                
+            case "Atualizar":
+                try{
+                    aluno.setNome(request.getParameter("nome"));
+                    aluno.setCurso(request.getParameter("curso"));
+                    AlunoModel am = new AlunoModel();
+                    
+                    am.atualizar(aluno);
+                    
+                    request.setAttribute("mensagem", am.toString2());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                    
+                }catch(SQLException sql){
+                    request.setAttribute("mensagem", sql.getMessage());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                }
+                break;
+                
+            case "Excluir":
+                request.setAttribute("mensagem", "Excluir");
                 request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
-            case "Atualizar":
-                //request.setAttribute("mensagem", sql.getMessage());
-                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-                break;
-            case "Excluir":
-                //request.setAttribute("mensagem", "Excluir");
-                //request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-                break;
             case "ConfirmarExclusao":
-                //request.setAttribute("mensagem", "Confirmar Exclusão");
-                //.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                request.setAttribute("mensagem", "Confirmar Exclusão");
+                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 break;
         }
     }
