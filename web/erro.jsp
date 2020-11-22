@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,6 +6,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Erro no Sistema</h1>
+        <div><%=exception%><\div>
     </body>
 </html>
