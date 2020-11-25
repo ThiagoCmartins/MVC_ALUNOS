@@ -178,12 +178,34 @@ public class AlunosController extends HttpServlet {
                 break;
                 
             case "Excluir":
-                request.setAttribute("mensagem", "Excluir");
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                try{                   
+                    AlunoModel am = new AlunoModel();
+                    aluno.setRa(request.getParameter("ra"));
+                    alunosDados = am.pesquisar(aluno, "ra");               
+                    
+                    request.setAttribute("alunoDados", alunosDados);
+                    request.getRequestDispatcher("view_excluir.jsp").forward(request, response); 
+                
+                }catch(SQLException sql){
+                    request.setAttribute("mensagem", sql.getMessage());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response); 
+                }
                 break;
+                
             case "ConfirmarExclusao":
-                request.setAttribute("mensagem", "Confirmar Exclusão");
-                request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                try{
+                    AlunoModel am = new AlunoModel();          
+                    alunosDados = am.pesquisar(aluno, "ra");
+                    
+                    am.excluir(aluno);
+                    
+                    request.setAttribute("mensagem", am.toString());
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                    
+                }catch(SQLException sql){
+                    request.setAttribute("mensagem", "Confirmar Exclusão");
+                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                }
                 break;
         }
     }

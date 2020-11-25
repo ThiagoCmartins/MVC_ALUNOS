@@ -160,7 +160,21 @@ public class AlunoModel implements Serializable {
     
     // método para excluir um registro (Delete - delete)
     public void excluir(Aluno aluno) {
-        
+                try {
+            String sql = "DELETE FROM alunos WHERE ra=?";
+            try (
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+                
+                ps.setString(1, aluno.getRa());
+                ps.execute();
+                ps.close();
+            }
+            conexao.close(); 
+            this.status = "Aluno [" + aluno.getNome() + "] excluido com sucesso!";
+        } catch (SQLException ex) {
+            this.status = "Erro ao excluir o aluno [" + ex.getMessage() + "]";
+        }
+
     }
 
     // método que retorna um texto quando chamamos o modelo.toString()
