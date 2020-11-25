@@ -102,14 +102,16 @@ public class AlunosController extends HttpServlet {
 
                     // Passando os valores para o objeto "am"
                     am.inserir(aluno);
-
+                    
                     // redireciona para a view de mensagem
                     request.setAttribute("mensagem", am.toString());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
 
                 } catch (SQLException sql) {
+                    
                     request.setAttribute("mensagem", sql.getMessage());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                    
                 }
                 break;
 
@@ -142,11 +144,10 @@ public class AlunosController extends HttpServlet {
                 break;
 
             case "Editar":
-                
                 try {
                     AlunoModel am = new AlunoModel();
                     aluno.setRa(request.getParameter("ra"));
-                    alunosDados = am.pesquisar(aluno, "ra");           
+                    alunosDados = am.pesquisar(aluno, "ra");               
                     
                     request.setAttribute("alunoDados", alunosDados);
                     request.getRequestDispatcher("view_editar.jsp").forward(request, response);
@@ -159,13 +160,15 @@ public class AlunosController extends HttpServlet {
                 
             case "Atualizar":
                 try{
+                    AlunoModel am = new AlunoModel();          
+                    
+                    alunosDados = am.pesquisar(aluno, "ra");
                     aluno.setNome(request.getParameter("nome"));
                     aluno.setCurso(request.getParameter("curso"));
-                    AlunoModel am = new AlunoModel();
                     
                     am.atualizar(aluno);
                     
-                    request.setAttribute("mensagem", am.toString2());
+                    request.setAttribute("mensagem", am.toString());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                     
                 }catch(SQLException sql){

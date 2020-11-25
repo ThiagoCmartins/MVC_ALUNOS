@@ -11,6 +11,7 @@
     <form name="editar" method="post" action="AlunosController">
         <div class="row">
             <div class="col-md-5 mb-3">
+                <label>ID: <strong>${aluno.id}</strong></label>
                 <label>RA: <strong>${aluno.ra}</strong></label>
             </div>
         </div>

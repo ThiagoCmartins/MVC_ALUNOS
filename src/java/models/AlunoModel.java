@@ -15,7 +15,7 @@ public class AlunoModel implements Serializable {
 
     // declarando os atributos principais
     private Connection conexao = null;
-    private String status, status2;
+    private String status;
 
     // método construtor
     // toda vez que a classe AlunoModel for instanciada,
@@ -30,15 +30,15 @@ public class AlunoModel implements Serializable {
         try {
             String sql = "INSERT INTO alunos (ra, nome, curso) VALUES (?,?,?)";
             try (
-                    PreparedStatement ps = conexao.prepareStatement(sql)) {
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
                 // atribuir os valores do objeto às posições (as interrogações)
+                
                 ps.setString(1, aluno.getRa());
                 ps.setString(2, aluno.getNome());
                 ps.setString(3, aluno.getCurso());
-
+                
                 // executa o SQL no banco de dados
                 ps.execute();
-
                 // fecha o PreparaStatement
                 ps.close();
             }
@@ -52,7 +52,6 @@ public class AlunoModel implements Serializable {
             this.status = "Erro ao inserir o aluno [" + ex.getMessage() + "]";
         }
     }
-
     // métodos de listar e pesquisar (Read - select)
     public List<Aluno> listar() {
         // variável para receber a lista de alunos originadas do banco
@@ -135,45 +134,38 @@ public class AlunoModel implements Serializable {
             throw new RuntimeException("Falha ao pesquisar");
         }
     }
-
-    public void Editar(Aluno aluno) {
-    }
     
+    public void Editar(Aluno aluno) { 
+    }
+
     public void atualizar(Aluno aluno) {
-        
         try {
-            String sql = "UPDATE alunos SET nome, curso VALUES (?,?) WHERE ra=?";
+            String sql = "UPDATE alunos SET nome=?, curso=? WHERE ra=?";
             try (
-                    
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
                 
-                ps.setString(1 ,aluno.getNome());
-                ps.setString(2 ,aluno.getCurso());
+                ps.setString(1, aluno.getNome());
+                ps.setString(2, aluno.getCurso());
+                ps.setString(3, aluno.getRa());
 
-
-                ps.execute();
+                ps.executeUpdate();
                 ps.close();
             }
             conexao.close(); 
-
-            this.status2 = "Aluno [" + aluno.getNome() + "] Atualizar com sucesso!";
-
+            this.status = "Aluno [" + aluno.getNome() + "] atualizar com sucesso!";
         } catch (SQLException ex) {
-            this.status2= "Erro ao Atualizar o aluno [" + ex.getMessage() + "]";
-        }
+            this.status = "Erro ao atualizar o aluno [" + ex.getMessage() + "]";  
+        }   
     }
-
+    
     // método para excluir um registro (Delete - delete)
     public void excluir(Aluno aluno) {
+        
     }
 
     // método que retorna um texto quando chamamos o modelo.toString()
     @Override
     public String toString() {
         return status;
-    }
- 
-    public String toString2() {
-        return status2;
     }
 }
