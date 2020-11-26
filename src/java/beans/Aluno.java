@@ -6,6 +6,7 @@
 package beans;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -54,6 +55,10 @@ public class Aluno implements Serializable {
 
     public void setCurso(String curso) {
         this.curso = curso;
+    }
+
+    public void setId(List<Aluno> alunosDados) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

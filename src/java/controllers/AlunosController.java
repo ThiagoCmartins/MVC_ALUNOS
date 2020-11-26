@@ -92,26 +92,29 @@ public class AlunosController extends HttpServlet {
         switch (operacao) {
             case "Inserir":
                 try {
-                    // recuperar os dados do formulário
-                    aluno.setRa(request.getParameter("ra"));
-                    aluno.setNome(request.getParameter("nome"));
-                    aluno.setCurso(request.getParameter("curso"));
-
-                    // Instanciar o Model (Aluno)
                     AlunoModel am = new AlunoModel();
-
-                    // Passando os valores para o objeto "am"
-                    am.inserir(aluno);
-                    
-                    // redireciona para a view de mensagem
-                    request.setAttribute("mensagem", am.toString());
-                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-
+                    alunosDados = am.pesquisar(aluno, "ra");
+  
+                    if(!request.getParameter("ra").equals("") && 
+                       !request.getParameter("nome").equals("") && 
+                       !request.getParameter("curso").equals("")){
+                                      
+                            aluno.setRa(request.getParameter("ra"));
+                            aluno.setNome(request.getParameter("nome"));
+                            aluno.setCurso(request.getParameter("curso"));
+                        
+                            am.inserir(aluno);
+                         
+                            request.setAttribute("mensagem", am.toString());
+                            request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);    
+                    }
+                    else{
+                        request.setAttribute("mensagem", "Erro [campos Vazios]");
+                        request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                    }
                 } catch (SQLException sql) {
-                    
                     request.setAttribute("mensagem", sql.getMessage());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-                    
                 }
                 break;
 
@@ -145,9 +148,9 @@ public class AlunosController extends HttpServlet {
 
             case "Editar":
                 try {
-                    AlunoModel am = new AlunoModel();
-                    aluno.setRa(request.getParameter("ra"));
-                    alunosDados = am.pesquisar(aluno, "ra");               
+                        AlunoModel am = new AlunoModel();
+                        aluno.setRa(request.getParameter("ra"));
+                        alunosDados = am.pesquisar(aluno, "ra");               
                     
                     request.setAttribute("alunoDados", alunosDados);
                     request.getRequestDispatcher("view_editar.jsp").forward(request, response);
@@ -160,17 +163,21 @@ public class AlunosController extends HttpServlet {
                 
             case "Atualizar":
                 try{
-                    AlunoModel am = new AlunoModel();          
+                    if(!request.getParameter("nome").equals("") && !request.getParameter("curso").equals("")){
+                        AlunoModel am = new AlunoModel();          
                     
-                    alunosDados = am.pesquisar(aluno, "ra");
-                    aluno.setNome(request.getParameter("nome"));
-                    aluno.setCurso(request.getParameter("curso"));
+                        aluno.setNome(request.getParameter("nome"));
+                        aluno.setCurso(request.getParameter("curso"));
                     
-                    am.atualizar(aluno);
+                        am.atualizar(aluno);
                     
-                    request.setAttribute("mensagem", am.toString());
-                    request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-                    
+                        request.setAttribute("mensagem", am.toString());
+                        request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                 }
+                 else{
+                        request.setAttribute("mensagem", "Erro [Campos vazios]");
+                        request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                    }
                 }catch(SQLException sql){
                     request.setAttribute("mensagem", sql.getMessage());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
@@ -196,6 +203,7 @@ public class AlunosController extends HttpServlet {
                 try{
                     AlunoModel am = new AlunoModel();          
                     alunosDados = am.pesquisar(aluno, "ra");
+                    aluno.setRa(request.getParameter("ra"));
                     
                     am.excluir(aluno);
                     

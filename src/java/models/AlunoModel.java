@@ -30,17 +30,15 @@ public class AlunoModel implements Serializable {
         try {
             String sql = "INSERT INTO alunos (ra, nome, curso) VALUES (?,?,?)";
             try (
+                    
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
-                // atribuir os valores do objeto às posições (as interrogações)
                 
-                ps.setString(1, aluno.getRa());
-                ps.setString(2, aluno.getNome());
-                ps.setString(3, aluno.getCurso());
+                    ps.setString(1, aluno.getRa());
+                    ps.setString(2, aluno.getNome());
+                    ps.setString(3, aluno.getCurso());
                 
-                // executa o SQL no banco de dados
-                ps.execute();
-                // fecha o PreparaStatement
-                ps.close();
+                    ps.execute();
+                    ps.close();
             }
             conexao.close(); // fecha a conexão com o banco
 
@@ -160,11 +158,10 @@ public class AlunoModel implements Serializable {
     
     // método para excluir um registro (Delete - delete)
     public void excluir(Aluno aluno) {
-                try {
+        try {
             String sql = "DELETE FROM alunos WHERE ra=?";
             try (
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
-                
                 ps.setString(1, aluno.getRa());
                 ps.execute();
                 ps.close();
@@ -174,7 +171,6 @@ public class AlunoModel implements Serializable {
         } catch (SQLException ex) {
             this.status = "Erro ao excluir o aluno [" + ex.getMessage() + "]";
         }
-
     }
 
     // método que retorna um texto quando chamamos o modelo.toString()
