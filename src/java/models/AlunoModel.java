@@ -47,7 +47,7 @@ public class AlunoModel implements Serializable {
 
         } catch (SQLException ex) {
             // se houve erro, vamos avisar o usuário
-            this.status = "Erro ao inserir o aluno [" + ex.getMessage() + "]";
+            this.status = "Erro ao inserir o aluno [" + ex.getMessage() + "]" + ": Model";
         }
     }
     // métodos de listar e pesquisar (Read - select)
@@ -86,7 +86,7 @@ public class AlunoModel implements Serializable {
             return alunos;
             
         } catch (SQLException ex) {
-            throw new RuntimeException("falha ao listar.", ex);
+            throw new RuntimeException("falha ao listar." + ": Model", ex);
         }
     }
 
@@ -130,7 +130,7 @@ public class AlunoModel implements Serializable {
                 return alunos;
 
         }catch(SQLException ex){
-            throw new RuntimeException("Falha ao pesquisar");
+            throw new RuntimeException("Falha ao pesquisar" + ": Model");
         }
     }
     
@@ -154,7 +154,7 @@ public class AlunoModel implements Serializable {
             conexao.close(); 
             this.status = "Aluno [" + aluno.getNome() + "] atualizar com sucesso!";
         } catch (SQLException ex) {
-            this.status = "Erro ao atualizar o aluno [" + ex.getMessage() + "]";  
+            this.status = "Erro ao atualizar o aluno [" + ex.getMessage() + "]" + ": Model";  
         }   
     }
     
@@ -171,7 +171,7 @@ public class AlunoModel implements Serializable {
             conexao.close(); 
             this.status = "Aluno [" + aluno.getNome() + "] excluido com sucesso!";
         } catch (SQLException ex) {
-            this.status = "Erro ao excluir o aluno [" + ex.getMessage() + "]";
+            this.status = "Erro ao excluir o aluno [" + ex.getMessage() + "]" + ": Model";
         }
     }
 

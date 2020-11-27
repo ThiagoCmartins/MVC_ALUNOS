@@ -99,7 +99,10 @@ public class AlunosController extends HttpServlet {
                        request.getParameter("nome").trim().length() != 0 && 
                        request.getParameter("curso").trim().length() != 0){
                                       
-                            aluno.setRa(request.getParameter("ra"));
+                            if (!request.getParameter("ra").trim().equals(alunosDados)){
+                                aluno.setRa(request.getParameter("ra"));
+                            }
+                                        
                             aluno.setNome(request.getParameter("nome"));
                             aluno.setCurso(request.getParameter("curso"));
                         
@@ -172,7 +175,8 @@ public class AlunosController extends HttpServlet {
                        request.getParameter("curso").trim().length() != 0){
                                             
                         AlunoModel am = new AlunoModel();          
-                    
+                        
+                        aluno.setRa(request.getParameter("ra"));
                         aluno.setNome(request.getParameter("nome"));
                         aluno.setCurso(request.getParameter("curso"));
                     
