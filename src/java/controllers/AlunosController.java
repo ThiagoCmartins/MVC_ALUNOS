@@ -95,9 +95,9 @@ public class AlunosController extends HttpServlet {
                     AlunoModel am = new AlunoModel();
                     alunosDados = am.pesquisar(aluno, "ra");
   
-                    if(!request.getParameter("ra").equals("") && 
-                       !request.getParameter("nome").equals("") && 
-                       !request.getParameter("curso").equals("")){
+                    if(request.getParameter("ra").trim().length() != 0 && 
+                       request.getParameter("nome").trim().length() != 0 && 
+                       request.getParameter("curso").trim().length() != 0){
                                       
                             aluno.setRa(request.getParameter("ra"));
                             aluno.setNome(request.getParameter("nome"));
@@ -120,18 +120,23 @@ public class AlunosController extends HttpServlet {
 
             case "Pesquisar":
                 String valorDigitado = request.getParameter("valor");
-                try {
-                    
+                
+                if(valorDigitado.trim().length() == 0){
+                    request.setAttribute("mensagem", "Erro [campos Vazios]");
+                    request.getRequestDispatcher("view_pesquisar.jsp").forward(request, response);
+                }
+                
+                try {              
                     AlunoModel am = new AlunoModel();
                     switch (request.getParameter("tipo")) {
                         case "ra":
-                            aluno.setRa(valorDigitado);
+                            aluno.setRa(valorDigitado.trim());
                             break;
                         case "nome":
-                            aluno.setNome(valorDigitado);
+                            aluno.setNome(valorDigitado.trim());
                             break;
                         case "curso":
-                            aluno.setCurso(valorDigitado);
+                            aluno.setCurso(valorDigitado.trim());
                             break;
                     }
 
@@ -163,7 +168,9 @@ public class AlunosController extends HttpServlet {
                 
             case "Atualizar":
                 try{
-                    if(!request.getParameter("nome").equals("") && !request.getParameter("curso").equals("")){
+                    if(request.getParameter("nome").trim().length() != 0 && 
+                       request.getParameter("curso").trim().length() != 0){
+                                            
                         AlunoModel am = new AlunoModel();          
                     
                         aluno.setNome(request.getParameter("nome"));
@@ -173,11 +180,13 @@ public class AlunosController extends HttpServlet {
                     
                         request.setAttribute("mensagem", am.toString());
                         request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-                 }
-                 else{
+                        
+                    }
+                    else{
                         request.setAttribute("mensagem", "Erro [Campos vazios]");
                         request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                     }
+                    
                 }catch(SQLException sql){
                     request.setAttribute("mensagem", sql.getMessage());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);

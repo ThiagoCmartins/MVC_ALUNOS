@@ -104,15 +104,16 @@ public class AlunoModel implements Serializable {
                 break;
                 
                 case "nome":
-                    sql = "SELECT * FROM alunos WHERE nome=? ORDER BY nome ASC";
+                    sql = "SELECT * FROM alunos WHERE nome LIKE ? ORDER BY nome ASC";
                     ps = conexao.prepareStatement(sql);
-                    ps.setString(1, aluno.getNome());
+                    ps.setString(1, "%" + aluno.getNome() + "%");
+
                 break;
                 
                 case "curso":
-                    sql = "SELECT * FROM alunos WHERE curso=? ORDER BY nome ASC";
+                    sql = "SELECT * FROM alunos WHERE curso LIKE ? ORDER BY nome ASC";
                     ps = conexao.prepareStatement(sql);
-                    ps.setString(1, aluno.getCurso());
+                    ps.setString(1, "%" + aluno.getCurso() + "%");
                 break;
             }
                 ResultSet rs = ps.executeQuery(); 
@@ -134,6 +135,7 @@ public class AlunoModel implements Serializable {
     }
     
     public void Editar(Aluno aluno) { 
+        //n usei
     }
 
     public void atualizar(Aluno aluno) {
