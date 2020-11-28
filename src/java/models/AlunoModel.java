@@ -28,10 +28,11 @@ public class AlunoModel implements Serializable {
     // método inserir - Create (insert)
     public void inserir(Aluno aluno) {
         try {
-            String sql = "INSERT INTO alunos (ra, nome, curso) VALUES (?,?,?)";
+            String sql = "INSERT INTO alunos (ra, nome, curso) VALUES (?,?,?)";                                      
             try (
                     
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
+
                 
                     ps.setString(1, aluno.getRa());
                     ps.setString(2, aluno.getNome());
@@ -124,7 +125,7 @@ public class AlunoModel implements Serializable {
                     aluno.setNome(rs.getString("nome"));
                     aluno.setCurso(rs.getString("curso"));
                     alunos.add(aluno);
-                }    
+                }  
                 rs.close();
                 ps.close();
                 return alunos;
@@ -132,10 +133,6 @@ public class AlunoModel implements Serializable {
         }catch(SQLException ex){
             throw new RuntimeException("Falha ao pesquisar" + ": Model");
         }
-    }
-    
-    public void Editar(Aluno aluno) { 
-        //n usei
     }
 
     public void atualizar(Aluno aluno) {

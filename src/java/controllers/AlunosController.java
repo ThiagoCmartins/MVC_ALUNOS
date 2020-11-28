@@ -92,26 +92,33 @@ public class AlunosController extends HttpServlet {
         switch (operacao) {
             case "Inserir":
                 try {
+                    
                     AlunoModel am = new AlunoModel();
-                    alunosDados = am.pesquisar(aluno, "ra");
-  
-                    if(request.getParameter("ra").trim().length() != 0 && 
-                       request.getParameter("nome").trim().length() != 0 && 
-                       request.getParameter("curso").trim().length() != 0){
-                                      
-                            if (!request.getParameter("ra").trim().equals(alunosDados)){
-                                aluno.setRa(request.getParameter("ra"));
-                            }
-                                        
+                    //String valordigitado = request.getParameter("ra");
+                    
+                    if(request.getParameter("nome").trim().length() != 0 && 
+                       request.getParameter("curso").trim().length() != 0 &&
+                       request.getParameter("ra").trim().length() != 0){
+                            
+                            aluno.setRa(request.getParameter("ra"));
+                            alunosDados = am.pesquisar(aluno, "ra");
+                            System.out.println("O VALOR DO alunosDados" + alunosDados);
+                                 
                             aluno.setNome(request.getParameter("nome"));
-                            aluno.setCurso(request.getParameter("curso"));
+                            aluno.setCurso(request.getParameter("curso"));    
                         
+                        if(alunosDados.isEmpty()){          
+                    
                             am.inserir(aluno);
-                         
+         
                             request.setAttribute("mensagem", am.toString());
-                            request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);    
-                    }
-                    else{
+                            request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                        }else{
+                            request.setAttribute("mensagem", "Erro [O Ra do Aluno já existe]");
+                            request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                    }           
+                } 
+                else{
                         request.setAttribute("mensagem", "Erro [campos Vazios]");
                         request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                     }
@@ -145,7 +152,7 @@ public class AlunosController extends HttpServlet {
 
                     alunosDados = am.pesquisar(aluno, request.getParameter("tipo"));
 
-                    request.setAttribute("listaAlunos", alunosDados);
+                    request.setAttribute("listaAlunos", alunosDados);                   
                     request.getRequestDispatcher("view_listar.jsp").forward(request, response);
 
                 } catch (SQLException sql) {
