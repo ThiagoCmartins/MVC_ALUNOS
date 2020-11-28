@@ -102,7 +102,6 @@ public class AlunosController extends HttpServlet {
                             
                             aluno.setRa(request.getParameter("ra"));
                             alunosDados = am.pesquisar(aluno, "ra");
-                            System.out.println("O VALOR DO alunosDados" + alunosDados);
                                  
                             aluno.setNome(request.getParameter("nome"));
                             aluno.setCurso(request.getParameter("curso"));    
@@ -114,7 +113,7 @@ public class AlunosController extends HttpServlet {
                             request.setAttribute("mensagem", am.toString());
                             request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                         }else{
-                            request.setAttribute("mensagem", "Erro [O Ra do Aluno já existe]");
+                            request.setAttribute("mensagem", "Erro RA [Aluno já existe]");
                             request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                     }           
                 } 
