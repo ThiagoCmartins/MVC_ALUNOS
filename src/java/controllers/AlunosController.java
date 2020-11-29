@@ -150,10 +150,16 @@ public class AlunosController extends HttpServlet {
                     }
 
                     alunosDados = am.pesquisar(aluno, request.getParameter("tipo"));
-
-                    request.setAttribute("listaAlunos", alunosDados);                   
-                    request.getRequestDispatcher("view_listar.jsp").forward(request, response);
-
+                    
+                    if (!alunosDados.isEmpty()){
+                        request.setAttribute("listaAlunos", alunosDados);                   
+                        request.getRequestDispatcher("view_listar.jsp").forward(request, response);
+                    }
+                    else{
+                        request.setAttribute("mensagem", "Erro [Aluno não encontrado]");
+                        request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                        
+                    }
                 } catch (SQLException sql) {
                     request.setAttribute("mensagem", sql.getMessage());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
