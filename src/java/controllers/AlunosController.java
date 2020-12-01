@@ -93,6 +93,7 @@ public class AlunosController extends HttpServlet {
             case "Inserir":
                 try {
                     
+                    int validar = (Integer.parseInt(request.getParameter("ra")));
                     AlunoModel am = new AlunoModel();
                     //String valordigitado = request.getParameter("ra");
                     
@@ -107,23 +108,28 @@ public class AlunosController extends HttpServlet {
                             aluno.setCurso(request.getParameter("curso"));    
                         
                         if(alunosDados.isEmpty()){          
-                    
+                           
                             am.inserir(aluno);
          
                             request.setAttribute("mensagem", am.toString());
                             request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                            
                         }else{
                             request.setAttribute("mensagem", "Erro RA [Aluno já existe]");
                             request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
-                    }           
-                } 
-                else{
+                            }           
+                
+                }else{
                         request.setAttribute("mensagem", "Erro [campos Vazios]");
                         request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                     }
                 } catch (SQLException sql) {
                     request.setAttribute("mensagem", sql.getMessage());
                     request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
+                
+                }catch (NumberFormatException validar){
+                         request.setAttribute("mensagem", "Erro RA [Didite apenas números]");
+                         request.getRequestDispatcher("view_mensagem.jsp").forward(request, response);
                 }
                 break;
 
